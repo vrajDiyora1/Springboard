@@ -1,0 +1,113 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "private_outputs": true,
+      "provenance": [],
+      "authorship_tag": "ABX9TyPH1Gjhn2SDs0g+LIn7+f+r",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/vrajDiyora1/Springboard/blob/main/investigating%20netflix%20%20movies\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "LfZsiJPJT2Tq"
+      },
+      "outputs": [],
+      "source": [
+        "# Importing pandas and matplotlib\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "\n",
+        "# Read in the Netflix CSV as a DataFrame\n",
+        "netflix_df = pd.read_csv(\"netflix_data.csv\")\n",
+        "netflix_df.head()"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "f1 = netflix_df[\n",
+        "    (netflix_df['type'] == 'Movie') &\n",
+        "    (netflix_df['release_year'] >= 1990) &\n",
+        "    (netflix_df['release_year'] <= 1999)\n",
+        "].copy()\n",
+        "f2= f1['duration'].mode()[0]\n",
+        "print(f2)"
+      ],
+      "metadata": {
+        "id": "71mfgvzFUF54"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "duration = int(round(f2))\n",
+        "print(f\"Most frequent movie duration in the 1990s: {duration} minutes\")"
+      ],
+      "metadata": {
+        "id": "SFaTAi_kUMAl"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import seaborn as sns\n",
+        "import matplotlib.pyplot as plt\n",
+        "plt.figure(figsize=(10,6))\n",
+        "sns.histplot(f1['duration'], bins=20)\n",
+        "plt.title('Distribution of Movie Durations (1990s)')\n",
+        "plt.xlabel('Duration (minutes)')\n",
+        "plt.ylabel('Count')\n",
+        "plt.axvline(duration, color='red', linestyle='--', label=f'Most Frequent Duration: {duration} min')\n",
+        "plt.legend()\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "id": "0aVsWbAcUQdJ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "f3= f1[\n",
+        "    (f1['genre'].str.contains('Action', case=False, na=False)) &\n",
+        "    (f1['duration'] < 90)\n",
+        "]\n",
+        "short_movie_count= f3.shape[0]\n",
+        "print(f\"Number of short action movies from the 1990s: {short_movie_count}\")"
+      ],
+      "metadata": {
+        "id": "pckCiN6fUSxq"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
